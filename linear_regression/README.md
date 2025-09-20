@@ -1,6 +1,6 @@
 # ML Fundamentals – Linear Regression 
 
-# Session Summary: Linear Regression on California Housing Dataset
+# Session Summary: Linear Regression Basics + California Housing Dataset
 
 ## What I Did During the Session
 
