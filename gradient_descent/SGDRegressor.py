@@ -7,7 +7,6 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-
 # Keep all existing functions and classes as they are
 
 # Add this new section for SGDRegressor implementation
