@@ -46,6 +46,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Generative AI** | LLMs, Prompt Engineering, Model Fine-tuning |
 | **Frameworks** | PyTorch, TensorFlow, Keras, scikit-learn |
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
+| **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 
 ## 🛠️ Projects & Implementations
@@ -54,6 +55,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Basic sentiment analysis pipeline using DistilBERT
 - Model comparison tool benchmarking different NLP models
 - Performance analysis and tradeoff evaluation
+
+### Model Fine-tuning & Training Approaches
+- Fine-tuning DistilBERT for sentiment analysis on IMDB dataset
+- Comparison of three training approaches:
+  - **Fine-tuning**: Training all layers with pre-trained weights
+  - **Frozen Base**: Training only classification head (~1.5K vs ~66M parameters)
+  - **From Scratch**: Random weight initialization with custom architecture
+- Custom metrics implementation (accuracy, precision, recall, F1)
+- Hugging Face Trainer API with TrainingArguments configuration
 
 ### Neural Networks with TensorFlow and PyTorch
 - Feedforward neural networks implementation
@@ -71,7 +81,9 @@ This repository serves as both a **learning project** and a **professional portf
 ## 💡 Skills Demonstrated
 
 - **Model Development**: Building, training, and optimizing neural networks
+- **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
+- **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
