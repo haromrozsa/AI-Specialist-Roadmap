@@ -48,8 +48,15 @@ This repository serves as both a **learning project** and a **professional portf
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
+| **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
 
 ## 🛠️ Projects & Implementations
+
+### LangChain with Hugging Face
+- Text generation chain implementing prompt → LLM → output pattern
+- Integration of Hugging Face models with LangChain using `HuggingFacePipeline`
+- Reusable `PromptTemplate` creation with dynamic input variables
+- LangChain Expression Language (LCEL) for chain composition
 
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
@@ -84,6 +91,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
+- **LangChain Development**: Chain composition, prompt templates, LLM integration
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
