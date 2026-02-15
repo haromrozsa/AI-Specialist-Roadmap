@@ -49,6 +49,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
+| **Vector Databases** | FAISS, Embeddings, Similarity Search |
 
 ## 🛠️ Projects & Implementations
 
@@ -57,6 +58,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Integration of Hugging Face models with LangChain using `HuggingFacePipeline`
 - Reusable `PromptTemplate` creation with dynamic input variables
 - LangChain Expression Language (LCEL) for chain composition
+
+### LangChain RAG (Retrieval-Augmented Generation)
+- Complete RAG pipeline for grounded question answering from documents
+- Document loading with `TextLoader`, `DirectoryLoader`, and `PyPDFLoader`
+- Text chunking with `RecursiveCharacterTextSplitter` for optimal retrieval
+- HuggingFace embeddings using `sentence-transformers/all-MiniLM-L6-v2`
+- FAISS vector store for efficient similarity search
+- RAG chain composition using LCEL with `RunnablePassthrough` and `StrOutputParser`
+- Source attribution to verify answers are grounded in documents
 
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
@@ -92,6 +102,8 @@ This repository serves as both a **learning project** and a **professional portf
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
+- **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
+- **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
