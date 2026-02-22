@@ -49,6 +49,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
+| **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
 | **Vector Databases** | FAISS, Embeddings, Similarity Search |
 
 ## 🛠️ Projects & Implementations
@@ -67,6 +68,14 @@ This repository serves as both a **learning project** and a **professional portf
 - FAISS vector store for efficient similarity search
 - RAG chain composition using LCEL with `RunnablePassthrough` and `StrOutputParser`
 - Source attribution to verify answers are grounded in documents
+
+### LangGraph Query Classifier & Router
+- Graph-based workflow for intelligent query routing
+- State management with `TypedDict` for data flowing through nodes
+- Multi-node architecture: classifier, specialized handlers (factual, creative, code), formatter
+- Conditional routing using `add_conditional_edges()` for dynamic path selection
+- Integration of LangChain components (prompts, LLM, parsers) inside LangGraph nodes
+- Demonstrates LangGraph vs LangChain: flexible graphs with branches vs linear pipelines
 
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
@@ -102,6 +111,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
+- **LangGraph Workflows**: Stateful graphs, conditional routing, multi-node orchestration
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
