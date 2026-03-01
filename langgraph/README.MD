@@ -29,6 +29,9 @@
    - Reused `HuggingFacePipeline` LLM setup from previous work
    - Built LCEL chains (`prompt | llm | StrOutputParser()`) inside each node function
 
+6. **Set up local development environment**:
+   - Created Docker configuration and local virtual environment (`langgraph_env`) to run the query classifier, with proper dependency version pinning to resolve compatibility issues.
+
 ---
 
 ## What I Learned
@@ -49,10 +52,13 @@
    - `add_conditional_edges(source, router_func, mapping_dict)` enables dynamic paths
    - Allows building decision trees and complex workflows
 
-4.**Graph Construction Pattern**:
+4. **Graph Construction Pattern**:
    - Create → Add nodes → Add edges (START, conditional, END) → Compile → Invoke
    - Initial state only needs input fields; empty strings for fields nodes will fill
    - Final state contains all accumulated data from the entire workflow
+
+5. **LangGraph Library vs Server**: 
+   - LangGraph can run as a standalone Python library (simple `pip install`) without needing LangGraph Server — the server is only required for REST API deployment or LangGraph Studio integration.
 
 ---
 

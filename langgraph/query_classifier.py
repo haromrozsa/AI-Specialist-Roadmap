@@ -37,7 +37,7 @@ class QueryState(TypedDict):
 # 2. LLM SETUP
 # =============================================================================
 
-def create_llm(model_id: str = "microsoft/Phi-3-mini-4k-instruct"):
+def create_llm(model_id: str = "microsoft/phi-2"):
     """
     Create a HuggingFace LLM pipeline.
     Reusing the same pattern from your existing code.
