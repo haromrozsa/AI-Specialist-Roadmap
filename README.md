@@ -48,6 +48,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
+| **Model Serving** | FastAPI, ONNX Runtime, REST API Inference |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
 | **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
 | **AI Agents** | ReAct Pattern, Tool Usage, Autonomous Decision Making |
@@ -88,6 +89,13 @@ This repository serves as both a **learning project** and a **professional portf
 - Conditional looping in LangGraph: reasoning → tool execution → reasoning (until done)
 - Demonstrates how frameworks abstract parsing, routing, and loop management
 
+### FastAPI ONNX Inference API
+- End-to-end ML inference pipeline: train → export → serve
+- Model training with scikit-learn `LogisticRegression` on digits dataset (64 features, 10 classes)
+- ONNX export using `skl2onnx` with `FloatTensorType` for flexible batch sizes
+- FastAPI `/predict` endpoint with `onnxruntime.InferenceSession` for inference
+- Input validation, normalization, and proper HTTP error handling
+
 
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
@@ -120,6 +128,8 @@ This repository serves as both a **learning project** and a **professional portf
 
 - **Model Development**: Building, training, and optimizing neural networks
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
+- **Model Export**: ONNX conversion for portable, framework-agnostic deployment
+- **API Development**: FastAPI endpoints for ML model serving with proper validation
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
