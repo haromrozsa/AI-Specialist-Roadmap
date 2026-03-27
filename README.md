@@ -15,11 +15,12 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 🎓 Certifications & Education
 
-| Certification/Education                                    | Issuer   | Year |
-|------------------------------------------------------------|----------|------|
-| **NVIDIA-Certified Associate: Generative AI LLMs**         | NVIDIA   | 2024 |
-| **Artificial Intelligence for Trading Nanodegree Program** | Udacity  | 2018 |
-| **Artificial Intelligence Nanodegree Program**             | Udacity  | 2017 |
+| Certification/Education                                    | Issuer  | Year |
+|------------------------------------------------------------|---------|------|
+| **AWS Certified Machine Learning - Specialty**             | AWS     | 2026 |
+| **NVIDIA-Certified Associate: Generative AI LLMs**         | NVIDIA  | 2024 |
+| **Artificial Intelligence for Trading Nanodegree Program** | Udacity | 2018 |
+| **Artificial Intelligence Nanodegree Program**             | Udacity | 2017 |
 
 ## 👨‍💻 Background & Experience
 
@@ -28,7 +29,7 @@ This repository serves as both a **learning project** and a **professional portf
 - Self-driven learner staying current with the rapidly evolving AI landscape
 - Practical experience spanning from classical ML to modern Generative AI
 - Passion for AI that extends beyond work – continuous experimentation and learning
-- 
+
 ## 🎯 Goals
 
 - **Continuous Learning**: Push meaningful updates weekly to maintain learning momentum
@@ -46,6 +47,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Generative AI** | LLMs, Prompt Engineering, Model Fine-tuning |
 | **Frameworks** | PyTorch, TensorFlow, Keras, scikit-learn |
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
+| **Cloud ML** | AWS SageMaker, ML Infrastructure, Cloud-based Training & Inference |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, ONNX Runtime, REST API Inference |
@@ -95,14 +97,7 @@ This repository serves as both a **learning project** and a **professional portf
 - Model training with scikit-learn `LogisticRegression` on digits dataset (64 features, 10 classes)
 - ONNX export using `skl2onnx` with `FloatTensorType` for flexible batch sizes
 - FastAPI `/predict` endpoint with `onnxruntime.InferenceSession` for inference
-- Input validation, normalization, and proper HTTP error handling
-
-### FastAPI ONNX Inference API
-- End-to-end ML inference pipeline: train → export → serve
-- Model training with scikit-learn `LogisticRegression` on digits dataset (64 features, 10 classes)
-- ONNX export using `skl2onnx` with `FloatTensorType` for flexible batch sizes
-- FastAPI `/predict` endpoint with `onnxruntime.InferenceSession` for inference
-- Input validation, normalization, and proper HTTP error handling
+- Pydantic models (`BaseModel`, `field_validator`) for strict input validation
 - Structured logging with dual handlers (console + file) and UTF-8 encoding
 - Custom exception handlers for validation errors and global error catching
 - HTTP middleware for request/response latency measurement
@@ -152,6 +147,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
+- **Cloud ML**: AWS-certified Machine Learning specialist (SageMaker, ML pipelines, deployment)
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
 - **Continuous Improvement**: Regular commits showing ongoing learning and development
