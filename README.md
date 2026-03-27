@@ -49,6 +49,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, ONNX Runtime, REST API Inference |
+| **Production APIs** | Pydantic Validation, Logging, Error Handling, Latency Measurement |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
 | **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
 | **AI Agents** | ReAct Pattern, Tool Usage, Autonomous Decision Making |
@@ -96,6 +97,18 @@ This repository serves as both a **learning project** and a **professional portf
 - FastAPI `/predict` endpoint with `onnxruntime.InferenceSession` for inference
 - Input validation, normalization, and proper HTTP error handling
 
+### FastAPI ONNX Inference API
+- End-to-end ML inference pipeline: train → export → serve
+- Model training with scikit-learn `LogisticRegression` on digits dataset (64 features, 10 classes)
+- ONNX export using `skl2onnx` with `FloatTensorType` for flexible batch sizes
+- FastAPI `/predict` endpoint with `onnxruntime.InferenceSession` for inference
+- Input validation, normalization, and proper HTTP error handling
+- Structured logging with dual handlers (console + file) and UTF-8 encoding
+- Custom exception handlers for validation errors and global error catching
+- HTTP middleware for request/response latency measurement
+- Proper handling of `skl2onnx` multi-output models (labels + probabilities)
+- Comprehensive test suite covering valid requests and edge cases
+
 
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
@@ -130,6 +143,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Model Export**: ONNX conversion for portable, framework-agnostic deployment
 - **API Development**: FastAPI endpoints for ML model serving with proper validation
+- **Production APIs**: Pydantic validation, structured logging, error handling, latency monitoring
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
