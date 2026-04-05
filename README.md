@@ -45,6 +45,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
 | **NLP** | Hugging Face Transformers, Sentiment Analysis, Text Generation |
 | **Generative AI** | LLMs, Prompt Engineering, Model Fine-tuning |
+| **Computer Vision** | Object Detection, YOLO, Image Processing, Batch Inference |
 | **Frameworks** | PyTorch, TensorFlow, Keras, scikit-learn |
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
 | **Cloud ML** | AWS SageMaker, ML Infrastructure, Cloud-based Training & Inference |
@@ -124,6 +125,14 @@ This repository serves as both a **learning project** and a **professional portf
 - Training loops and evaluation metrics
 - Regularization techniques (BatchNorm, Dropout, Max-norm)
 
+### YOLO Object Detection
+- Batch image processing with YOLOv8 (Ultralytics) for real-time object detection
+- Pre-trained YOLOv8n (nano) model detecting 80 COCO dataset classes with multi-format support
+- Multi-format image support (.jpg, .png, .bmp, .tiff, .webp)
+- Automated bounding box annotation with class labels and confidence scores
+- Command-line interface for flexible input/output directory configuration
+- Detection statistics reporting and error handling with comprehensive summary reports
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -143,6 +152,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
 - **LangGraph Workflows**: Stateful graphs, conditional routing, multi-node orchestration
+- **Computer Vision**: Object detection with YOLO, image processing, batch inference
 - **AI Agents**: ReAct pattern implementation, tool integration, autonomous reasoning loops
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence

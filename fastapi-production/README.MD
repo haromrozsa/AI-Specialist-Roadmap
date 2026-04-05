@@ -1,4 +1,4 @@
-# Week 14: Production-Ready FastAPI ONNX API
+# Production-Ready FastAPI ONNX API
 
 ## Session Summary: Made an ML inference API production-ready by adding Pydantic input validation, structured logging, proper error handling, and latency measurement.
 
