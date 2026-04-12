@@ -52,6 +52,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, ONNX Runtime, REST API Inference |
+| **Model Evaluation** | Precision, Recall, F1-Score, IoU, Ground Truth Annotations |
 | **Production APIs** | Pydantic Validation, Logging, Error Handling, Latency Measurement |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
 | **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
@@ -105,7 +106,6 @@ This repository serves as both a **learning project** and a **professional portf
 - Proper handling of `skl2onnx` multi-output models (labels + probabilities)
 - Comprehensive test suite covering valid requests and edge cases
 
-
 ### Hugging Face Pipelines
 - Basic sentiment analysis pipeline using DistilBERT
 - Model comparison tool benchmarking different NLP models
@@ -133,6 +133,13 @@ This repository serves as both a **learning project** and a **professional portf
 - Command-line interface for flexible input/output directory configuration
 - Detection statistics reporting and error handling with comprehensive summary reports
 
+### YOLO API + Evaluation
+- FastAPI REST API for YOLOv8 object detection with `/detect` endpoint and Swagger UI
+- Structured JSON output with bounding boxes, confidence scores, and inference timing
+- Pydantic models for request/response validation with lazy model loading
+- Evaluation script calculating Precision, Recall, F1-Score using IoU-based matching
+- Ground truth annotation system with test dataset support (10-20 images)
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -152,7 +159,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
 - **LangGraph Workflows**: Stateful graphs, conditional routing, multi-node orchestration
-- **Computer Vision**: Object detection with YOLO, image processing, batch inference
+- **Computer Vision**: Object detection with YOLO, image processing, batch inference, REST API serving
 - **AI Agents**: ReAct pattern implementation, tool integration, autonomous reasoning loops
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
@@ -161,6 +168,8 @@ This repository serves as both a **learning project** and a **professional portf
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
 - **Continuous Improvement**: Regular commits showing ongoing learning and development
+- **ML Model APIs**: FastAPI endpoints with file uploads, structured responses, and Swagger docs
+- **Model Evaluation**: Precision, Recall, F1-Score calculation, IoU-based detection matching
 
 ## 📈 Progress Tracking
 
