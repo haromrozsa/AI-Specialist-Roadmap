@@ -1,0 +1,6 @@
+{
+  "image_name": "image1.jpg",
+  "annotations": [
+    {"class": "dog", "bbox": [87.8, 10.1, 267.02, 136.08]}
+  ]
+}
