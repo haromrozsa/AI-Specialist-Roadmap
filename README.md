@@ -51,8 +51,9 @@ This repository serves as both a **learning project** and a **professional portf
 | **Cloud ML** | AWS SageMaker, ML Infrastructure, Cloud-based Training & Inference |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
-| **Model Serving** | FastAPI, ONNX Runtime, REST API Inference |
-| **AI in Java** | ONNX Runtime for Java, JVM-based Inference, Lombok, SLF4J Logging |
+| **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
+| **AI in Java** | ONNX Runtime for Java, Spring Boot, JVM-based Inference, Lombok, SLF4J Logging |
+| **Enterprise Java** | Spring Boot, Dependency Injection, Bean Validation, Actuator, Swagger/OpenAPI |
 | **Model Evaluation** | Precision, Recall, F1-Score, IoU, Ground Truth Annotations |
 | **Production APIs** | Pydantic Validation, Logging, Error Handling, Latency Measurement |
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
@@ -153,6 +154,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Lombok integration (`@Slf4j`, `@RequiredArgsConstructor`, `@Getter`, `@UtilityClass`) with structured SLF4J + Logback logging
 - **Security hardening**: `PathValidator` utility preventing path traversal attacks via canonicalization, base-directory enforcement, and file-extension allow-listing
 
+### Spring Boot ML API (MNIST)
+- Production-ready Spring Boot REST API for MNIST digit classification using ONNX Runtime
+- Layered architecture with Controller → Service → Utility separation and Spring dependency injection
+- **Multiple input formats**: Raw features (JSON array), image file upload (multipart/form-data), Base64-encoded images
+- **Enterprise features**: Jakarta Bean Validation, global exception handling with `@RestControllerAdvice`, health checks, model info endpoints
+- **Monitoring & Observability**: Spring Boot Actuator with health, metrics, and Prometheus endpoints
+- **Interactive API Documentation**: Swagger UI via SpringDoc OpenAPI 3 with "Try it out" functionality
+- Lifecycle management with `@PostConstruct` for model initialization and `@PreDestroy` for cleanup
+- Structured logging with Logback (console + file appenders) and configurable log levels
 
 *More projects being added continuously...*
 
@@ -167,9 +177,10 @@ This repository serves as both a **learning project** and a **professional portf
 - **Model Development**: Building, training, and optimizing neural networks
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Model Export**: ONNX conversion for portable, framework-agnostic deployment
-- **API Development**: FastAPI endpoints for ML model serving with proper validation
+- **API Development**: FastAPI and Spring Boot endpoints for ML model serving with proper validation
 - **AI in Java**: ONNX Runtime for Java, JVM-based inference, pure-Java image preprocessing
-- **Production APIs**: Pydantic validation, structured logging, error handling, latency monitoring
+- **Spring Boot Expertise**: Dependency injection, lifecycle management, REST controllers, Bean Validation
+- **Production APIs**: Pydantic validation (Python), Jakarta validation (Java), structured logging, error handling, latency monitoring
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
 - **Hugging Face Expertise**: Trainer API, AutoModel, AutoTokenizer, DataCollators
 - **LangChain Development**: Chain composition, prompt templates, LLM integration
