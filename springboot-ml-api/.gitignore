@@ -39,3 +39,6 @@ logs/
 ### OS ###
 .DS_Store
 Thumbs.db
+
+# Ignore ONNX model files (download from ONNX Model Zoo)
+*.onnx

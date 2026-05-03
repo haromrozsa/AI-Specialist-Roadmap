@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # YOLO Object Detection Service (FastAPI + Python)
+  yolo-service:
+    build:
+      context: ../yolo-api
+      dockerfile: Dockerfile
+    container_name: yolo-detection-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount outputs directory to persist detection results
+      - ./logs/yolo-outputs:/app/outputs
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - ml-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MNIST Classification Service (Spring Boot + Java)
+  mnist-service:
+    build:
+      context: ../springboot-ml-api
+      dockerfile: Dockerfile
+    container_name: mnist-classification-api
+    ports:
+      - "8080:8080"
+    volumes:
+      # Mount logs directory to persist application logs
+      - ./logs/mnist-logs:/app/logs
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - ml-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  # Shared network for service communication
+  ml-network:
+    driver: bridge
+
+volumes:
+  # Named volumes for persistent storage
+  yolo-outputs:
+  mnist-logs:

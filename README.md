@@ -60,11 +60,14 @@ This repository serves as both a **learning project** and a **professional portf
 | **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
 | **AI Agents** | ReAct Pattern, Tool Usage, Autonomous Decision Making |
 | **Vector Databases** | FAISS, Embeddings, Similarity Search |
+| **Containerization** | Docker, Docker Compose, Multi-stage Builds, Container Orchestration |
+| **DevOps** | Health Checks, Volume Mounts, Environment Configuration, Service Networking |
 
 ## Technologies Used
 
 - **Python** - Primary language
 - **Java** - ONNX Runtime inference demo application
+- **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
 
@@ -163,6 +166,17 @@ This repository serves as both a **learning project** and a **professional portf
 - **Interactive API Documentation**: Swagger UI via SpringDoc OpenAPI 3 with "Try it out" functionality
 - Lifecycle management with `@PostConstruct` for model initialization and `@PreDestroy` for cleanup
 - Structured logging with Logback (console + file appenders) and configurable log levels
+
+### Multi-Service Docker Deployment
+- Dockerized microservices architecture with two independent ML services (YOLO + MNIST)
+- Multi-stage Dockerfiles for optimized image sizes (builder + runtime separation)
+- **YOLO Service**: Python 3.11-slim with FastAPI, OpenCV, Ultralytics YOLOv8 (port 8000)
+- **MNIST Service**: Java 25 with Spring Boot, ONNX Runtime, Maven build (port 8080)
+- Docker Compose orchestration with shared network (`ml-network`) for service discovery
+- Volume mounts for persistent logs (`./logs/yolo-outputs`, `./logs/mnist-logs`)
+- Health checks with appropriate start periods (40s Python, 60s Java) and retry policies
+- Environment-based configuration with `.env` support for ports, JVM settings, and log levels
+- Service isolation with `.dockerignore` excluding build artifacts, IDE configs, and test data
 
 *More projects being added continuously...*
 

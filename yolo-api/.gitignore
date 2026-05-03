@@ -1,0 +1,19 @@
+# YOLOv8 model weights (download from Ultralytics)
+*.pt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Outputs
+outputs/
+test_images/
+evaluation/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

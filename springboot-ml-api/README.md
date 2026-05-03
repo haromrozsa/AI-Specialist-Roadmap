@@ -2,6 +2,24 @@
 
 > ⚠️ **Note**: This is a demonstration/learning project. For production deployments, secure Actuator endpoints, add authentication/authorization, and review security configurations.
 
+## 📋 Prerequisites
+
+### Download the MNIST Model
+
+Before running the application, you need to download the MNIST ONNX model:
+
+```bash
+# Navigate to the models directory
+cd src/main/resources/models
+
+# Download the model from ONNX Model Zoo
+curl -L -o mnist-12.onnx https://github.com/onnx/models/raw/main/validated/vision/classification/mnist/model/mnist-12.onnx
+```
+
+**Alternative**: Download manually from [ONNX Model Zoo](https://github.com/onnx/models/tree/main/validated/vision/classification/mnist) and place it in `src/main/resources/models/mnist-12.onnx`
+
+---
+
 ## Session Summary: Built a production-ready Spring Boot REST API for MNIST digit classification using ONNX Runtime, demonstrating enterprise-grade ML inference with multiple input formats, comprehensive monitoring, and interactive API documentation.
 
 ## What I Did During the Session

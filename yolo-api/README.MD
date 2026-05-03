@@ -1,5 +1,24 @@
 # YOLO API + Evaluation
 
+## 📋 Prerequisites
+
+### Download the YOLOv8 Model
+
+Before running the application, download the YOLOv8 nano model:
+
+```bash
+# From the yolo-api directory
+cd yolo-api
+
+# Download YOLOv8n model (will auto-download on first run, or manually):
+# The model will automatically download when you first use it, or download manually:
+curl -L -o yolov8n.pt https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt
+```
+
+**Alternative**: The Ultralytics library will automatically download `yolov8n.pt` on first use if not present.
+
+---
+
 ## Session Summary: Built a FastAPI-based REST API for YOLOv8 object detection with a `/detect` endpoint, JSON output, and an evaluation script to measure model quality using Precision, Recall, and F1-Score metrics.
 
 ## What I Did During the Session

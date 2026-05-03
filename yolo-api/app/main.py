@@ -46,18 +46,6 @@ async def root():
     }
 
 
-@app.get("/model/info")
-async def model_info():
-    """Get information about the loaded model"""
-    yolo = get_model()
-    return {
-        "model_name": MODEL_NAME,
-        "task": yolo.task,
-        "classes_count": len(yolo.names),
-        "classes": yolo.names
-    }
-
-
 @app.post("/detect", response_model=DetectionResponse)
 async def detect_objects(
         file: UploadFile = File(..., description="Image file to process"),
