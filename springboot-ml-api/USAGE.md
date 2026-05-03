@@ -1,10 +1,28 @@
 # Usage Guide - Spring Boot ML API
 
-## Starting the Application
+## Prerequisites
 
-### Prerequisites
-- Java 17 or higher
+### System Requirements
+- Java 25
 - Maven 3.6+
+
+### Download MNIST Model (Required)
+
+Before running the application, download the MNIST ONNX model:
+
+```bash
+# Navigate to the models directory
+cd src/main/resources/models
+
+# Download the model from ONNX Model Zoo
+curl -L -o mnist-12.onnx https://github.com/onnx/models/raw/main/validated/vision/classification/mnist/model/mnist-12.onnx
+```
+
+**Alternative**: Download manually from [ONNX Model Zoo](https://github.com/onnx/models/tree/main/validated/vision/classification/mnist) and place it in `src/main/resources/models/mnist-12.onnx`
+
+---
+
+## Starting the Application
 
 ### Run the Application
 

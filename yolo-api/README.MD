@@ -1,25 +1,13 @@
-# YOLO API + Evaluation
+# YOLO Object Detection API
 
-## 📋 Prerequisites
-
-### Download the YOLOv8 Model
-
-Before running the application, download the YOLOv8 nano model:
-
-```bash
-# From the yolo-api directory
-cd yolo-api
-
-# Download YOLOv8n model (will auto-download on first run, or manually):
-# The model will automatically download when you first use it, or download manually:
-curl -L -o yolov8n.pt https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt
-```
-
-**Alternative**: The Ultralytics library will automatically download `yolov8n.pt` on first use if not present.
+## Session Summary
+Built a FastAPI-based REST API for YOLOv8 object detection with a `/detect` endpoint, JSON output, and an evaluation script to measure model quality using Precision, Recall, and F1-Score metrics.
 
 ---
 
-## Session Summary: Built a FastAPI-based REST API for YOLOv8 object detection with a `/detect` endpoint, JSON output, and an evaluation script to measure model quality using Precision, Recall, and F1-Score metrics.
+**📖 For usage instructions, see [USAGE.md](USAGE.md)**
+
+---
 
 ## What I Did During the Session
 
@@ -38,8 +26,8 @@ curl -L -o yolov8n.pt https://github.com/ultralytics/assets/releases/download/v0
 3. **Implemented FastAPI Application (`main.py`)**:
    - Set up FastAPI app with metadata (title, description, version)
    - Created health check endpoint (`GET /`) for API status monitoring
-   - Built model info endpoint (`GET /model/info`) to retrieve YOLO model details
    - Implemented lazy loading pattern for YOLO model to optimize startup time
+   - Built object detection endpoint with file upload and confidence threshold
 
 4. **Built Object Detection Endpoint (`POST /detect`)**:
    - Accepted image uploads via `multipart/form-data` with file validation
@@ -54,18 +42,6 @@ curl -L -o yolov8n.pt https://github.com/ultralytics/assets/releases/download/v0
    - Created detection evaluation logic matching predictions to ground truth
    - Calculated True Positives, False Positives, and False Negatives
    - Computed Precision, Recall, and F1-Score metrics with configurable IoU threshold
-
-6. **Developed API Testing Script (`test_api.py`)**:
-   - Created Python script using `requests` library for API testing
-   - Implemented image upload functionality to `/detect` endpoint
-   - Parsed and displayed JSON detection responses
-   - Provided alternative to PowerShell's limited `-Form` parameter support
-
-7. **Configured Project Structure**:
-   - Organized code into `app/` (API) and `evaluation/` (metrics) packages
-   - Set up `test_images/` for test dataset and `evaluation/annotations/` for ground truth
-   - Created `outputs/` directory for detection results and evaluation reports
-   - Added `__init__.py` files for proper Python package structure
 
 ## What I Learned
 
@@ -98,21 +74,9 @@ curl -L -o yolov8n.pt https://github.com/ultralytics/assets/releases/download/v0
 
 5. **Python Virtual Environments**:
    - `python -m venv <name>` creates isolated Python environments
-   - Activation differs by OS: `Scripts\activate` (Windows) vs `source bin/activate` (Linux/Mac)
-   - Virtual environments start empty — packages must be installed after creation
-   - Package version conflicts (like NumPy) depend on Python version compatibility
-
-6. **Running Uvicorn Server**:
-   - `uvicorn app.main:app` follows the pattern `module:variable`
-   - `--reload` enables auto-restart on code changes (development mode)
-   - `--host 0.0.0.0` binds to all network interfaces
-   - Use `python -m uvicorn` if the command isn't in PATH
-   - Swagger UI at `/docs` provides interactive API testing
-
-7. **API Testing Methods**:
-   - Swagger UI (`/docs`) is the easiest way to test endpoints interactively
-   - Python `requests` library handles file uploads with `files={"file": open(..., "rb")}`
-   - PowerShell's `-Form` parameter requires version 6+ (use Python script as alternative)
-   - `curl.exe` (not `curl`) avoids PowerShell alias issues on Windows
+   - Each environment has independent package installations
+   - `requirements.txt` locks dependency versions for reproducibility
+   - NumPy/OpenCV version compatibility requires matching Python versions
+   - Virtual environments prevent global package conflicts
 
 This session provided hands-on experience building production-style ML APIs, implementing evaluation pipelines for model quality assessment, and understanding the full workflow from model inference to metrics reporting.
