@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# CDK
+cdk.out/
+.cdk.staging/
+cdk.context.json
+
+# Lambda
+lambda_package/
+lambda_layer/
+*.zip
+
+# LocalStack
+localstack-data/
+
+# Outputs
+outputs/
+
+# AWS - Credentials and environment files (NEVER commit these!)
+.aws/
+.env
+*.pem
+*.key
+credentials
+config
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

@@ -48,7 +48,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Computer Vision** | Object Detection, YOLO, Image Processing, Batch Inference |
 | **Frameworks** | PyTorch, TensorFlow, Keras, scikit-learn |
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
-| **Cloud ML** | AWS SageMaker, ML Infrastructure, Cloud-based Training & Inference |
+| **Cloud ML** | AWS SageMaker, AWS Lambda, S3, CloudWatch, ML Infrastructure |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
@@ -62,6 +62,8 @@ This repository serves as both a **learning project** and a **professional portf
 | **Vector Databases** | FAISS, Embeddings, Similarity Search |
 | **Containerization** | Docker, Docker Compose, Multi-stage Builds, Container Orchestration |
 | **DevOps** | Health Checks, Volume Mounts, Environment Configuration, Service Networking |
+| **Serverless** | AWS Lambda, S3 Event Triggers, Lambda Layers, Cold Start Optimization |
+| **Infrastructure as Code** | AWS CDK, CloudFormation, IAM Policies, Resource Management |
 
 ## Technologies Used
 
@@ -178,6 +180,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Environment-based configuration with `.env` support for ports, JVM settings, and log levels
 - Service isolation with `.dockerignore` excluding build artifacts, IDE configs, and test data
 
+### Serverless AI Inference (AWS Lambda + S3 + ONNX)
+- Event-driven serverless architecture: S3 upload → Lambda trigger → ONNX inference → S3 results storage
+- AWS Lambda function with Python 3.11, ONNX Runtime, and automatic S3 event notification triggers
+- Infrastructure-as-code using AWS CDK: S3 buckets, Lambda function, Lambda Layers, IAM policies, CloudWatch Logs
+- Local testing environment without AWS: `lambda_handler_local.py` for offline development, LocalStack Docker setup for S3 simulation
+- Architecture diagrams using Mermaid: data flow sequence diagram and component architecture visualization
+- Cost-effective serverless ML: ~$0.50/month for 10,000 inferences with auto-scaling and zero idle costs
+- Comprehensive documentation: deployment guide (CDK, manual CLI, LocalStack), troubleshooting, cost analysis
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -204,7 +215,9 @@ This repository serves as both a **learning project** and a **professional portf
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
-- **Cloud ML**: AWS-certified Machine Learning specialist (SageMaker, ML pipelines, deployment)
+- **Cloud ML**: AWS-certified Machine Learning specialist (SageMaker, Lambda, S3, ML pipelines, deployment)
+- **Serverless Architecture**: Event-driven inference, S3 triggers, Lambda optimization, cold start mitigation
+- **Infrastructure as Code**: AWS CDK with Python, CloudFormation synthesis, IAM policy automation
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
 - **Best Practices**: Implementing proper regularization, evaluation, and documentation
 - **Continuous Improvement**: Regular commits showing ongoing learning and development

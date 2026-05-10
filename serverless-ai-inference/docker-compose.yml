@@ -1,0 +1,52 @@
+services:
+  # LocalStack - AWS cloud emulator for local development
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: serverless-ai-localstack
+    ports:
+      - "4566:4566"  # LocalStack gateway
+      - "4510-4559:4510-4559"  # External services
+    environment:
+      - SERVICES=s3,lambda,logs
+      - DEBUG=0
+      - DATA_DIR=/var/lib/localstack
+      - LAMBDA_EXECUTOR=local
+      - PERSISTENCE=1
+      - SKIP_SSL_CERT_DOWNLOAD=1
+    volumes:
+      - "./localstack-data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - serverless-network
+
+  # Initialization container - sets up S3 buckets
+  init:
+    image: amazon/aws-cli:latest
+    container_name: serverless-ai-init
+    depends_on:
+      - localstack
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        echo "Waiting for LocalStack to be ready..."
+        sleep 10
+
+        echo "Creating S3 buckets..."
+        aws --endpoint-url=http://localstack:4566 s3 mb s3://mnist-inference-input
+        aws --endpoint-url=http://localstack:4566 s3 mb s3://mnist-inference-output
+
+        echo "Listing buckets..."
+        aws --endpoint-url=http://localstack:4566 s3 ls
+
+        echo "LocalStack initialization complete!"
+    networks:
+      - serverless-network
+
+networks:
+  serverless-network:
+    driver: bridge
