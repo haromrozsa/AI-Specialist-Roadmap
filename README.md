@@ -64,6 +64,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **DevOps** | Health Checks, Volume Mounts, Environment Configuration, Service Networking |
 | **Serverless** | AWS Lambda, S3 Event Triggers, Lambda Layers, Cold Start Optimization |
 | **Infrastructure as Code** | AWS CDK, CloudFormation, IAM Policies, Resource Management |
+| **Experiment Tracking** | MLflow, Parameter Logging, Metric Tracking, Dataset Versioning |
 
 ## Technologies Used
 
@@ -189,6 +190,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Cost-effective serverless ML: ~$0.50/month for 10,000 inferences with auto-scaling and zero idle costs
 - Comprehensive documentation: deployment guide (CDK, manual CLI, LocalStack), troubleshooting, cost analysis
 
+### MLflow Experiment Tracking
+- MLflow integration for systematic experiment tracking replacing ad-hoc logging
+- Parameter logging (`n_estimators`, `max_depth`, `min_samples_split`) via `mlflow.log_param()`
+- Metric tracking (accuracy, precision, recall, F1-score) via `mlflow.log_metric()`
+- Dataset versioning using MD5 hashing for reproducibility
+- Input statistics logging (mean, std, min, max per feature) for data awareness
+- MLflow UI for side-by-side experiment comparison and model artifact retrieval
+- Demonstrated with scikit-learn Random Forest on Wine dataset (5 experiments, 178 samples, 13 features)
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -223,6 +233,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Continuous Improvement**: Regular commits showing ongoing learning and development
 - **ML Model APIs**: FastAPI endpoints with file uploads, structured responses, and Swagger docs
 - **Model Evaluation**: Precision, Recall, F1-Score calculation, IoU-based detection matching
+- **Experiment Tracking**: MLflow integration, parameter/metric logging, dataset versioning, run comparison
 
 ## 📈 Progress Tracking
 
