@@ -65,6 +65,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Serverless** | AWS Lambda, S3 Event Triggers, Lambda Layers, Cold Start Optimization |
 | **Infrastructure as Code** | AWS CDK, CloudFormation, IAM Policies, Resource Management |
 | **Experiment Tracking** | MLflow, Parameter Logging, Metric Tracking, Dataset Versioning |
+| **Workflow Orchestration** | Apache Airflow, DAG Design, Task Dependencies, XCom Data Passing |
 
 ## Technologies Used
 
@@ -199,6 +200,14 @@ This repository serves as both a **learning project** and a **professional portf
 - MLflow UI for side-by-side experiment comparison and model artifact retrieval
 - Demonstrated with scikit-learn Random Forest on Wine dataset (5 experiments, 178 samples, 13 features)
 
+### Airflow ML Pipeline with LLM Summary
+- Apache Airflow DAG orchestrating end-to-end ML workflow: `load_data` → `train_model` → `evaluate_model` → `generate_llm_summary`
+- **LLM Integration**: Hugging Face `flan-t5-small` automatically generates natural language summaries of model performance for non-technical audiences
+- XCom (cross-communication) for passing metadata, training info, and evaluation results between tasks
+- Modular task design: `data_loader.py`, `model_trainer.py`, `model_evaluator.py`, `llm_summarizer.py` as reusable Python functions
+- Docker Compose deployment with PostgreSQL backend, Airflow webserver (port 8080), and scheduler with LocalExecutor
+- Demonstrates modern ML automation: workflow orchestration + generative AI for automated reporting and insights generation
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -234,6 +243,8 @@ This repository serves as both a **learning project** and a **professional portf
 - **ML Model APIs**: FastAPI endpoints with file uploads, structured responses, and Swagger docs
 - **Model Evaluation**: Precision, Recall, F1-Score calculation, IoU-based detection matching
 - **Experiment Tracking**: MLflow integration, parameter/metric logging, dataset versioning, run comparison
+- **Workflow Orchestration**: Apache Airflow DAG design, task dependencies, XCom data passing, scheduler configuration
+- **ML Automation**: End-to-end pipeline automation (data → train → evaluate → report) with LLM-powered insights
 
 ## 📈 Progress Tracking
 
