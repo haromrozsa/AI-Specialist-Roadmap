@@ -1,0 +1,59 @@
+name: Validate SageMaker Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r sagemaker-pipeline-demo/requirements.txt
+
+    - name: Run training script test
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        python src/train.py --output-dir outputs/test_model --n-estimators 10
+
+    - name: Run evaluation script test
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        python src/evaluate.py --model-dir outputs/test_model --output-dir outputs/test_eval
+
+    - name: Validate pipeline definition
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        python -c "from pipeline import create_pipeline; p = create_pipeline(); print(f'Pipeline validated: {p.name}')"
+
+    - name: Run full pipeline simulation
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        python run_local.py --n-estimators 50 --accuracy-threshold 0.85
+
+    - name: Check outputs
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        test -f outputs/model/model.pkl || exit 1
+        test -f outputs/evaluation/evaluation_results.json || exit 1
+        test -f outputs/pipeline_execution.json || exit 1
+        echo "✓ All output files created successfully"
+
+    - name: Display pipeline results
+      working-directory: sagemaker-pipeline-demo
+      run: |
+        echo "=== Pipeline Execution Results ==="
+        cat outputs/pipeline_execution.json

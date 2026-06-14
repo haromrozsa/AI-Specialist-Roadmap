@@ -47,8 +47,8 @@ This repository serves as both a **learning project** and a **professional portf
 | **Generative AI** | LLMs, Prompt Engineering, Model Fine-tuning |
 | **Computer Vision** | Object Detection, YOLO, Image Processing, Batch Inference |
 | **Frameworks** | PyTorch, TensorFlow, Keras, scikit-learn |
-| **MLOps** | Model Deployment, Pipeline Development, Performance Optimization |
-| **Cloud ML** | AWS SageMaker, AWS Lambda, S3, CloudWatch, ML Infrastructure |
+| **MLOps** | Model Deployment, Pipeline Development, Performance Optimization, CI/CD for ML |
+| **Cloud ML** | AWS SageMaker Pipelines, AWS Lambda, S3, CloudWatch, ML Infrastructure, Model Registry |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
@@ -208,6 +208,14 @@ This repository serves as both a **learning project** and a **professional portf
 - Docker Compose deployment with PostgreSQL backend, Airflow webserver (port 8080), and scheduler with LocalExecutor
 - Demonstrates modern ML automation: workflow orchestration + generative AI for automated reporting and insights generation
 
+### SageMaker Pipeline with CI/CD
+- Complete SageMaker ML pipeline with 3-step workflow: `TrainIrisClassifier` → `EvaluateModel` → `CheckAccuracyCondition` → `RegisterIrisModel`
+- **Conditional deployment logic**: Model registration to Model Registry only if accuracy ≥ threshold using `ConditionStep`
+- Pipeline parameters (`NEstimators`, `TestSize`, `AccuracyThreshold`) for flexible runtime configuration
+- Local pipeline simulation (`run_local.py`) for rapid development without AWS costs
+- GitHub Actions CI/CD workflow automating pipeline validation, training, evaluation, and output verification
+- LocalStack Docker setup for optional AWS service simulation (S3, SageMaker, IAM)
+
 *More projects being added continuously...*
 
 ## 🛠️ Development Approach
@@ -235,6 +243,8 @@ This repository serves as both a **learning project** and a **professional portf
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
 - **Cloud ML**: AWS-certified Machine Learning specialist (SageMaker, Lambda, S3, ML pipelines, deployment)
+- **SageMaker Pipelines**: Pipeline definition with steps, conditional logic, parameter configuration, Model Registry integration
+- **CI/CD for ML**: GitHub Actions workflows for automated pipeline validation, testing, and deployment
 - **Serverless Architecture**: Event-driven inference, S3 triggers, Lambda optimization, cold start mitigation
 - **Infrastructure as Code**: AWS CDK with Python, CloudFormation synthesis, IAM policy automation
 - **Problem Solving**: Debugging ML pipelines and resolving compatibility issues
