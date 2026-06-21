@@ -19,11 +19,15 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: 'pip'
+        cache-dependency-path: 'sagemaker-pipeline-demo/requirements.txt'
 
     - name: Install dependencies
+      working-directory: sagemaker-pipeline-demo
       run: |
         python -m pip install --upgrade pip
-        pip install -r sagemaker-pipeline-demo/requirements.txt
+        pip install -r requirements.txt
+        pip list | grep sagemaker
 
     - name: Run training script test
       working-directory: sagemaker-pipeline-demo
