@@ -14,6 +14,7 @@ from sagemaker.workflow.parameters import ParameterInteger, ParameterFloat, Para
 from sagemaker.workflow.conditions import ConditionGreaterThanOrEqualTo
 from sagemaker.workflow.condition_step import ConditionStep
 from sagemaker.workflow.properties import PropertyFile
+from sagemaker.workflow.functions import JsonGet
 from sagemaker.sklearn.estimator import SKLearn
 from sagemaker.sklearn.processing import SKLearnProcessor
 from sagemaker.processing import ProcessingInput, ProcessingOutput
@@ -83,8 +84,14 @@ def create_pipeline(
         role=role,
         instance_type=instance_type,
         instance_count=1,
-        framework_version="1.2-1",
-        py_version="py3"
+        framework_version="1.2-1"
+    )
+
+    # Property file for conditional logic
+    evaluation_report = PropertyFile(
+        name="EvaluationReport",
+        output_name="evaluation",
+        path="evaluation_results.json"
     )
 
     evaluation_step = ProcessingStep(
@@ -104,25 +111,21 @@ def create_pipeline(
                 destination=f"s3://{bucket}/evaluation-output"
             )
         ],
+        property_files=[evaluation_report],
         job_arguments=[
             "--accuracy-threshold", str(accuracy_threshold.default_value)
         ],
         description="Evaluate trained model"
     )
 
-    # Property file for conditional logic
-    evaluation_report = PropertyFile(
-        name="EvaluationReport",
-        output_name="evaluation",
-        path="evaluation_results.json"
-    )
-
-    evaluation_step.add_property_files(evaluation_report)
-
     # Step 3: Conditional Model Registration
     # Condition: accuracy >= threshold
     accuracy_condition = ConditionGreaterThanOrEqualTo(
-        left=evaluation_report.json_path("metrics.accuracy"),
+        left=JsonGet(
+            step_name=evaluation_step.name,
+            property_file=evaluation_report,
+            json_path="metrics.accuracy"
+        ),
         right=accuracy_threshold
     )
 
