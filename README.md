@@ -50,6 +50,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **MLOps** | Model Deployment, Pipeline Development, Performance Optimization, CI/CD for ML |
 | **Cloud ML** | AWS SageMaker Pipelines, AWS Lambda, S3, CloudWatch, ML Infrastructure, Model Registry |
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
+| **Parameter-Efficient Fine-tuning** | LoRA, PEFT, Low-Rank Adaptation, Adapter Merging, QLoRA Foundations |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
 | **AI in Java** | ONNX Runtime for Java, Spring Boot, JVM-based Inference, Lombok, SLF4J Logging |
@@ -133,6 +134,16 @@ This repository serves as both a **learning project** and a **professional portf
   - **From Scratch**: Random weight initialization with custom architecture
 - Custom metrics implementation (accuracy, precision, recall, F1)
 - Hugging Face Trainer API with TrainingArguments configuration
+
+### LoRA / Parameter-Efficient Fine-tuning (PEFT)
+- Fourth training approach added to the fine-tuning comparison using the `peft` library
+- Low-rank decomposition of the weight update: `ΔW ≈ B @ A` with `r=8`, reducing a 590K-parameter projection update to ~12K
+- `LoraConfig` targeting DistilBERT attention query/value projections (`q_lin`, `v_lin`) across all 6 layers
+- Zero-initialized `B` matrix ensuring training starts numerically identical to the pre-trained model
+- `modules_to_save` handling for the randomly initialized classification head — a silent accuracy killer if omitted
+- Adapter artifact measurement: ~MB-scale adapter versus a ~265MB full model checkpoint
+- `merge_and_unload()` folding adapters back into base weights for zero inference-latency overhead
+- Side-by-side accuracy comparison against full fine-tuning on identical data and evaluation
 
 ### Neural Networks with TensorFlow and PyTorch
 - Feedforward neural networks implementation
@@ -228,6 +239,7 @@ This repository serves as both a **learning project** and a **professional portf
 
 - **Model Development**: Building, training, and optimizing neural networks
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
+- **Parameter-Efficient Fine-tuning**: LoRA adapters via PEFT, rank/alpha tuning, adapter merging and hot-swapping
 - **Model Export**: ONNX conversion for portable, framework-agnostic deployment
 - **API Development**: FastAPI and Spring Boot endpoints for ML model serving with proper validation
 - **AI in Java**: ONNX Runtime for Java, JVM-based inference, pure-Java image preprocessing
