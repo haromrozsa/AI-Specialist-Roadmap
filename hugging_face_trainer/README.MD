@@ -95,12 +95,16 @@
 
 ## Approach Comparison
 
+All rows describe `distilbert-base-uncased` (~67M parameters) except where noted.
+
 | Approach | Trainable params | Base weights changed? | Adapts internal representations? |
 |---|---|---|---|
-| From scratch | ~9.1M (all random, reduced config: 2 layers, dim 256) | n/a | Yes |
+| From scratch | ~67M in principle; **~9.1M as implemented** (reduced config: 2 layers, dim 256) | n/a (all random) | Yes |
 | Full fine-tuning | ~67M | Yes | Yes |
 | Frozen base | ~592K | No | **No** |
 | LoRA (`r=8`) | ~740K (147K adapter + 592K head) | No | Yes |
+
+⚠️ **The from-scratch row is not a like-for-like comparison.** Training a full DistilBERT from random initialization would use the same ~67M parameters as full fine-tuning — architecture is independent of how the weights are initialized. `approach_3_from_scratch()` deliberately shrinks the model (`n_layers=2`, `dim=256`, `hidden_dim=512`) so the demonstration finishes in reasonable time on CPU. Its weak accuracy therefore has **two** causes — random initialization *and* reduced capacity — which should not be conflated. The other three rows all train the same ~67M model, so they *are* directly comparable to each other.
 
 ## Running It
 
