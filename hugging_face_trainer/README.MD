@@ -72,7 +72,7 @@
 6. **LoRA and Parameter-Efficient Fine-tuning (PEFT)**:
     - The insight is that the *update* `ΔW`, not the weight matrix itself, is empirically low-rank — so it can be factorized as `ΔW ≈ B @ A` with `B` of shape (768 × r) and `A` of shape (r × 768)
     - The forward pass becomes `h = W·x + (alpha/r)·B·A·x`, where `W` stays frozen and only `A` and `B` receive gradients
-    - For one 768×768 projection at `r=8` this is 12,288 trainable numbers instead of 590,592 — roughly 2%
+    - For one 768×768 projection at `r=8` this is 12,288 trainable numbers instead of 768×768 = 589,824 — roughly 2% (LoRA adapts the weight matrix only, not the bias)
     - `B` is initialized to **zeros** and `A` to small random values, so `B@A = 0` at step 0: training starts from the pre-trained model exactly, which is why LoRA is stable without warmup tricks
     - `r` controls capacity (4–8 is ample for classification, 16–64 for generative tasks); `lora_alpha` scales the adapter's influence, with `alpha = 2r` a common convention
     - Adapting only `q_lin` and `v_lin` across 6 layers gives 12 modules × 12,288 ≈ **147K LoRA parameters** (~0.22% of the ~67M total)
@@ -83,9 +83,9 @@
     - `task_type=SEQ_CLS` alone is not enough: without `modules_to_save`, `pre_classifier` stays frozen at its **random** initialization and accuracy collapses
 
 8. **Artifact Size Is Not the Reason to Choose LoRA**:
-    - Frozen base only changes the head, so in principle it ships ~592K parameters (~2.4 MB) — *smaller* than a LoRA adapter
+    - Frozen base only changes the head, so in principle it ships ~592K parameters (~2.3 MB) — *smaller* than a LoRA adapter
     - The real difference is **capacity**: frozen base learns only a new linear readout over features that never move, while LoRA injects trainable deltas into attention across all 6 layers, so internal representations genuinely shift toward the task
-    - Tooling obscures this: `Trainer.save_model()` serializes all ~265 MB regardless of what was frozen, whereas PEFT's `save_pretrained()` writes only the adapter by default
+    - Tooling obscures this: `Trainer.save_model()` serializes all ~255 MB regardless of what was frozen, whereas PEFT's `save_pretrained()` writes only the adapter by default
 
 9. **LoRA Is a Training-Time Trick, Not a Permanent Architecture**:
     - `merge_and_unload()` folds `W + (alpha/r)·B·A` back into `W`, returning an ordinary transformers model with **zero** added inference latency
@@ -97,7 +97,7 @@
 
 | Approach | Trainable params | Base weights changed? | Adapts internal representations? |
 |---|---|---|---|
-| From scratch | ~66M (all random) | n/a | Yes |
+| From scratch | ~9.1M (all random, reduced config: 2 layers, dim 256) | n/a | Yes |
 | Full fine-tuning | ~67M | Yes | Yes |
 | Frozen base | ~592K | No | **No** |
 | LoRA (`r=8`) | ~740K (147K adapter + 592K head) | No | Yes |

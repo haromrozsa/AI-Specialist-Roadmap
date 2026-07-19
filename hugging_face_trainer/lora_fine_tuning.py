@@ -2,10 +2,10 @@
 LoRA (Low-Rank Adaptation) Fine-tuning with PEFT:
 A fourth approach to compare against fine-tuning / frozen base / from scratch.
 
-Core idea: instead of learning the full weight update ΔW (768x768 = 590K numbers
-per attention projection), learn a low-rank factorization ΔW ≈ B @ A where
-B is (768 x r) and A is (r x 768) with r=8. That is 12,288 numbers instead of
-590,592 -- about 2% -- while the original weight W stays completely frozen.
+Core idea: instead of learning the full weight update ΔW (768x768 = 589,824
+numbers per attention projection), learn a low-rank factorization ΔW ≈ B @ A
+where B is (768 x r) and A is (r x 768) with r=8. That is 12,288 numbers
+instead of 589,824 -- about 2% -- while the original weight W stays frozen.
 
     h = W·x  +  (alpha/r) · B·A·x
         ↑                   ↑

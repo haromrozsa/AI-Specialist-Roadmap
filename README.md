@@ -141,7 +141,7 @@ This repository serves as both a **learning project** and a **professional portf
 - `LoraConfig` targeting DistilBERT attention query/value projections (`q_lin`, `v_lin`) across all 6 layers
 - Zero-initialized `B` matrix ensuring training starts numerically identical to the pre-trained model
 - `modules_to_save` handling for the randomly initialized classification head — a silent accuracy killer if omitted
-- Adapter artifact measurement: ~MB-scale adapter versus a ~265MB full model checkpoint
+- Adapter artifact measurement: ~MB-scale adapter versus a ~255MB full model checkpoint
 - `merge_and_unload()` folding adapters back into base weights for zero inference-latency overhead
 - Side-by-side accuracy comparison against full fine-tuning on identical data and evaluation
 
