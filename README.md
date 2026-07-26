@@ -60,6 +60,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **LLM Frameworks** | LangChain, Prompt Templates, Chain Composition |
 | **Graph Workflows** | Stateful Processing, Conditional Routing, Multi-Node Orchestration |
 | **AI Agents** | ReAct Pattern, Tool Usage, Autonomous Decision Making |
+| **Model Context Protocol** | MCP Servers, FastMCP, Tool Exposure, stdio Transport, MCP Clients |
 | **Vector Databases** | FAISS, Embeddings, Similarity Search |
 | **Containerization** | Docker, Docker Compose, Multi-stage Builds, Container Orchestration |
 | **DevOps** | Health Checks, Volume Mounts, Environment Configuration, Service Networking |
@@ -108,6 +109,15 @@ This repository serves as both a **learning project** and a **professional portf
   - **LangChain built-in**: `@tool` decorator + `create_react_agent()` + `AgentExecutor`
 - Conditional looping in LangGraph: reasoning → tool execution → reasoning (until done)
 - Demonstrates how frameworks abstract parsing, routing, and loop management
+
+### MCP Inference Server (Model Context Protocol)
+- Minimal MCP server exposing a trained ONNX digit classifier as callable tools using the official `mcp` Python SDK's high-level `FastMCP` API
+- Two tools with `@mcp.tool()` decorators — `get_sample(index)` to fetch a real digits sample and `classify_digit(features)` to run ONNX inference — where docstrings + type hints become the tool schema
+- **stdio transport**: the standard MCP pattern where the client launches the server as a subprocess and exchanges JSON-RPC over stdin/stdout
+- Python MCP client (`stdio_client` + `ClientSession`) that drives the server end-to-end with **no API key** — lists tools, chains `get_sample` → `classify_digit`, and verifies the prediction
+- Correct handling of the `skl2onnx` ZipMap probability output (list of `{class: prob}` dicts) to compute real confidence
+- `claude_desktop_config.json` snippet for registering the server with a real LLM client
+- Demonstrates how MCP standardizes the manual tool-calling pattern hand-rolled in the ReAct agent demos
 
 ### FastAPI ONNX Inference API
 - End-to-end ML inference pipeline: train → export → serve
@@ -251,6 +261,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **LangGraph Workflows**: Stateful graphs, conditional routing, multi-node orchestration
 - **Computer Vision**: Object detection with YOLO, image processing, batch inference, REST API serving
 - **AI Agents**: ReAct pattern implementation, tool integration, autonomous reasoning loops
+- **Model Context Protocol (MCP)**: Building FastMCP servers and MCP clients, exposing ML models as tools over stdio, JSON-RPC handshake and tool discovery
 - **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
