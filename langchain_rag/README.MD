@@ -71,3 +71,57 @@
    - Instruct the LLM to say "I don't know" when context is insufficient
    - Use `k` parameter to control how many documents are retrieved
    - Normalize embeddings for better similarity comparisons
+
+---
+
+This session provided hands-on experience building a complete RAG pipeline from scratch — loading and chunking documents, embedding them with HuggingFace models, indexing in a FAISS vector store, and composing an LCEL chain that grounds LLM answers in retrieved context with source attribution.
+
+---
+
+# Session 2 — Reranking Retriever (Cross-Encoder)
+
+# Session Summary: Upgraded the RAG retriever from a single bi-encoder pass to a two-stage retrieve-then-rerank pipeline, using a cross-encoder to reorder FAISS candidates for sharper relevance (`reranking_rag.py`).
+
+## What I Did During the Session
+
+1. **Identified the Bi-Encoder Limitation**:
+   - The base RAG retrieves with a bi-encoder (query and docs embedded independently), which is fast but a coarse relevance signal
+   - Built a small in-memory corpus with lexical "trap" documents that share vocabulary with the query ("memory", "deployment", "large model") without answering it
+
+2. **Implemented Stage 1 — Wide Retrieval**:
+   - Reused `HuggingFaceEmbeddings` (`all-MiniLM-L6-v2`) + FAISS from Session 1
+   - Used `similarity_search_with_score` to retrieve a wider candidate set (top-6) and printed the ranking with distances
+
+3. **Implemented Stage 2 — Cross-Encoder Reranking**:
+   - Loaded a `CrossEncoder` (`cross-encoder/ms-marco-MiniLM-L-6-v2`) from `sentence-transformers`
+   - Scored each `[query, document]` pair jointly and re-sorted, keeping the top-3
+   - Printed a before → after comparison (`▲/▼ was #k`) so the reordering is visible
+
+4. **Assembled Reranked Context**:
+   - Joined the reranked top-3 into grounded context ready for the LLM generation step
+   - Kept the demo retrieval-only so it runs CPU-only with no model download
+
+---
+
+## What I Learned
+
+1. **Bi-Encoder vs. Cross-Encoder**:
+   - **Bi-encoder**: embeds query and documents *separately*, compares vectors — cheap, scales to millions of docs, coarser relevance
+   - **Cross-encoder**: feeds the *(query, document) pair together* through the model with cross-attention — much more accurate relevance, but far slower
+
+2. **Two-Stage Retrieval Pattern**:
+   - Cross-encoders are too slow to run over a whole corpus, so they are used as a **reranker** over a small candidate set, not as the first-stage retriever
+   - Retrieve wide and cheap (bi-encoder), then rerank narrow and accurate (cross-encoder) — the canonical production RAG pattern
+
+3. **Why Reranking Helps**:
+   - Pure embedding similarity can rank a document highly for sharing surface vocabulary with the query while not answering it
+   - Joint scoring lets the reranker demote those lexical "traps" and promote genuinely relevant documents
+
+4. **Practical Notes**:
+   - `CrossEncoder.predict()` takes a list of `[query, passage]` pairs and returns one relevance score per pair (higher = better) — sort descending
+   - Retrieve more candidates than you keep (e.g., retrieve 6, keep 3) to give the reranker room to reorder
+   - `sentence-transformers` (already a dependency of the embeddings stack) provides `CrossEncoder`, so no new heavy dependency is needed
+
+---
+
+This session provided hands-on experience upgrading a naive single-pass retriever into a two-stage retrieve-then-rerank pipeline — combining a fast bi-encoder for wide recall with an accurate cross-encoder for precise reordering, the canonical pattern for production-grade RAG retrieval quality.

@@ -62,6 +62,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **AI Agents** | ReAct Pattern, Tool Usage, Autonomous Decision Making |
 | **Model Context Protocol** | MCP Servers, FastMCP, Tool Exposure, stdio Transport, MCP Clients |
 | **Vector Databases** | FAISS, Embeddings, Similarity Search |
+| **Retrieval Quality** | Two-Stage Retrieval, Cross-Encoder Reranking, Bi-Encoder vs. Cross-Encoder |
 | **Containerization** | Docker, Docker Compose, Multi-stage Builds, Container Orchestration |
 | **DevOps** | Health Checks, Volume Mounts, Environment Configuration, Service Networking |
 | **Serverless** | AWS Lambda, S3 Event Triggers, Lambda Layers, Cold Start Optimization |
@@ -91,6 +92,8 @@ This repository serves as both a **learning project** and a **professional portf
 - FAISS vector store for efficient similarity search
 - RAG chain composition using LCEL with `RunnablePassthrough` and `StrOutputParser`
 - Source attribution to verify answers are grounded in documents
+- Two-stage retrieval with reranking: bi-encoder retrieve (FAISS top-k) then cross-encoder rerank (`cross-encoder/ms-marco-MiniLM-L-6-v2`) to reorder candidates for sharper relevance
+- Demonstrates the bi-encoder vs. cross-encoder tradeoff and how joint (query, document) scoring demotes lexical "trap" documents that share vocabulary without answering the query
 
 ### LangGraph Query Classifier & Router
 - Graph-based workflow for intelligent query routing
@@ -262,7 +265,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Computer Vision**: Object detection with YOLO, image processing, batch inference, REST API serving
 - **AI Agents**: ReAct pattern implementation, tool integration, autonomous reasoning loops
 - **Model Context Protocol (MCP)**: Building FastMCP servers and MCP clients, exposing ML models as tools over stdio, JSON-RPC handshake and tool discovery
-- **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation
+- **RAG Systems**: Document ingestion, embeddings, vector stores, retrieval-augmented generation, two-stage retrieval with cross-encoder reranking
 - **Vector Databases**: FAISS integration, similarity search, embedding persistence
 - **Generative AI**: NVIDIA-certified expertise in LLMs and generative models
 - **Cloud ML**: AWS-certified Machine Learning specialist (SageMaker, Lambda, S3, ML pipelines, deployment)
