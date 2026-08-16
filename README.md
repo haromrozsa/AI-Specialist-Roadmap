@@ -52,6 +52,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Training** | Fine-tuning, Transfer Learning, Frozen Base Training, Training from Scratch |
 | **Parameter-Efficient Fine-tuning** | LoRA, PEFT, Low-Rank Adaptation, Adapter Merging, QLoRA Foundations |
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
+| **Model Optimization** | Post-Training Quantization, INT8, Dynamic vs. Static Quantization, Calibration |
 | **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
 | **AI in Java** | ONNX Runtime for Java, Spring Boot, JVM-based Inference, Lombok, SLF4J Logging |
 | **Enterprise Java** | Spring Boot, Dependency Injection, Bean Validation, Actuator, Swagger/OpenAPI |
@@ -185,6 +186,15 @@ This repository serves as both a **learning project** and a **professional portf
 - Lombok integration (`@Slf4j`, `@RequiredArgsConstructor`, `@Getter`, `@UtilityClass`) with structured SLF4J + Logback logging
 - **Security hardening**: `PathValidator` utility preventing path traversal attacks via canonicalization, base-directory enforcement, and file-extension allow-listing
 
+### ONNX INT8 Quantization Benchmark
+- Post-training quantization of the repository's own MNIST CNN to INT8, comparing **dynamic** and **static** approaches against the FP32 baseline
+- `quant_pre_process()` symbolic shape inference as a documented prerequisite before quantizing
+- Custom `CalibrationDataReader` feeding 200 **training** images to record activation ranges — calibrating on test data would leak test information into the model
+- `QuantFormat.QDQ` with `per_channel=True` so each convolution filter gets its own scale, limiting accuracy loss
+- Measured tradeoff on 10,000 test images: **~3.5x smaller** with accuracy unchanged (98.88% → 98.89%, within noise)
+- **Latency measured honestly**: dynamic came out 3.3x *slower* and static roughly at parity, because this CNN runs in ~0.1 ms — QDQ node overhead dominates at that scale, and the CPU lacks VNNI integer acceleration
+- Demonstrates why weights need no calibration but activations do: `y = W @ x` needs both operands as integers, and `x` is unknown until inference
+
 ### Spring Boot ML API (MNIST)
 - Production-ready Spring Boot REST API for MNIST digit classification using ONNX Runtime
 - Layered architecture with Controller → Service → Utility separation and Spring dependency injection
@@ -254,6 +264,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Parameter-Efficient Fine-tuning**: LoRA adapters via PEFT, rank/alpha tuning, adapter merging and hot-swapping
 - **Model Export**: ONNX conversion for portable, framework-agnostic deployment
+- **Inference Optimization**: Post-training INT8 quantization, calibration data readers, size/latency/accuracy tradeoff measurement
 - **API Development**: FastAPI and Spring Boot endpoints for ML model serving with proper validation
 - **AI in Java**: ONNX Runtime for Java, JVM-based inference, pure-Java image preprocessing
 - **Spring Boot Expertise**: Dependency injection, lifecycle management, REST controllers, Bean Validation
