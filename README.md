@@ -43,6 +43,8 @@ This repository serves as both a **learning project** and a **professional portf
 |----------|--------|
 | **AI Fundamentals** | Neural Networks, Deep Learning, Model Architecture |
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
+| **Unsupervised Learning** | KMeans Clustering, Elbow Method, Silhouette Score, Adjusted Rand Index |
+| **Dimensionality Reduction** | PCA, Explained Variance, Scree Plots, Reconstruction from Components |
 | **NLP** | Hugging Face Transformers, Sentiment Analysis, Text Generation |
 | **Generative AI** | LLMs, Prompt Engineering, Model Fine-tuning |
 | **Computer Vision** | Object Detection, YOLO, Image Processing, Batch Inference |
@@ -78,6 +80,17 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Unsupervised Learning — KMeans Clustering & PCA
+- Three scripts covering clustering and dimensionality reduction, built around the idea that the standard recipes ("use the elbow method", "keep 95% of the variance", "always scale first") are heuristics with failure modes rather than rules
+- **KMeans on synthetic `make_blobs` data with a known true k**, so the elbow method and silhouette score can be checked against the right answer — something no real dataset permits
+- Demonstrates that **inertia cannot select k**: it falls monotonically and hits exactly 0 at k = n_samples, so the elbow is a visual judgement, while silhouette has a genuine maximum because it penalizes clusters that sit too close together
+- **Feature scaling as a correctness issue**: multiplying one feature by 50 (a unit change, not an information change) reorganizes the centroids, measured with Adjusted Rand Index before and after `StandardScaler`
+- **Local minima made visible**: 10 single-start fits (`n_init=1, init="random"`) versus the `n_init=10` + k-means++ default that normally hides the variance
+- **PCA on the 64-feature digits dataset**: 29 components carry 95% of the variance; principal components rendered as 8×8 images to show that a component is a signed weight per pixel, not a feature
+- **Reconstruction via `inverse_transform`** at 1/2/5/10/20/40/64 components with per-pixel MSE — digits are readable at 10 components (74% variance), well below the conventional 95% threshold
+- **Combined `scale → PCA → cluster` pipeline** with the ordering justified (scaling after PCA would re-inflate the components PCA just demoted) and the scaling decision measured rather than assumed — standardizing hurts here because all 64 features share one unit and 3 pixels are constant
+- Contingency table of true digit vs. cluster ID showing where clustering and classification genuinely diverge: KMeans finds compact regions in pixel space, which is not the semantic partition
 
 ### LangChain with Hugging Face
 - Text generation chain implementing prompt → LLM → output pattern
@@ -260,6 +273,8 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 💡 Skills Demonstrated
 
+- **Unsupervised Learning**: KMeans clustering, k selection via elbow and silhouette, cluster evaluation without labels
+- **Dimensionality Reduction**: PCA, explained-variance analysis, reconstruction quality vs. compression tradeoffs
 - **Model Development**: Building, training, and optimizing neural networks
 - **Model Fine-tuning**: Transfer learning, frozen base training, training from scratch
 - **Parameter-Efficient Fine-tuning**: LoRA adapters via PEFT, rank/alpha tuning, adapter merging and hot-swapping
