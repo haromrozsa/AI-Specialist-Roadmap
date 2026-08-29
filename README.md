@@ -43,6 +43,8 @@ This repository serves as both a **learning project** and a **professional portf
 |----------|--------|
 | **AI Fundamentals** | Neural Networks, Deep Learning, Model Architecture |
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
+| **Tree-Based Models** | Decision Trees, Gini vs. Entropy, Depth & Overfitting Curves, Cost-Complexity Pruning, Feature Importance |
+| **Ensemble Methods** | Bagging, Random Forests, Out-of-Bag Error, Tree Decorrelation, Gradient Boosting, XGBoost, Early Stopping |
 | **Unsupervised Learning** | KMeans Clustering, Elbow Method, Silhouette Score, Adjusted Rand Index |
 | **Dimensionality Reduction** | PCA, Explained Variance, Scree Plots, Reconstruction from Components |
 | **NLP** | Hugging Face Transformers, Sentiment Analysis, Text Generation |
@@ -80,6 +82,20 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Decision Trees, Random Forests & Gradient Boosting
+- Three scripts covering the tree family end to end on the **same Titanic split the repository already models with logistic regression**, so every accuracy figure has a baseline to sit beside rather than floating on its own
+- **A tree is a staircase**: decision boundaries drawn at depth 1/3/5/unlimited show that every split is axis-aligned, and that an unconstrained tree carves private boxes around individual noisy points
+- **Training accuracy is not a diagnostic**: it climbs monotonically to 0.975 while cross-validated accuracy peaks at depth 4 (0.817) and decays to 0.750 — the train-minus-CV gap widens from 0.000 to +0.225
+- **A 179-row test set cannot select hyperparameters**: test accuracy stayed flat across depths 1–15 while CV showed a clean peak-and-decay, because the noise floor (one row = 0.0056 accuracy) sits above the effect
+- **Variance measured directly** rather than inferred from accuracy: across 20 bootstrap resamples two single trees disagree on 19.2% of test rows, two forests on 12.9% — the accuracy spread understates this because the test set has sampling noise of its own
+- **Out-of-bag error as a free validation set** — within 0.016 of test error at 300 trees, no split required; and the forest's error curve flattens rather than turning up, so `n_estimators` is a budget, not a risk
+- **A textbook effect that did not reproduce**: `max_features` moved accuracy by only 0.014 across its entire range, with plain bagging matching the `sqrt` default. Measuring tree-to-tree disagreement (22.2% vs 19.3%) showed the decorrelation mechanism working exactly as described — it simply had nothing to buy on 9 mostly-dummy columns
+- **The feature importance everybody quotes is the biased one**: `fare` ranks 1st by impurity and 4th by permutation importance on the test set, because continuous features offer more candidate split points
+- **Leakage given a recognisable shape**: deliberately re-adding seaborn's `alive` column produces 1.0000 test accuracy with one feature holding 0.76 of the importance — a signature no cross-validation, OOB score or held-out set can catch
+- **Boosting inverts the tuning advice**: more rounds genuinely overfit (test log-loss more than tripled past its minimum at `learning_rate=1.0`), and depth-6 trees reach the lowest minimum then collapse while stumps hold theirs for 500 rounds
+- **Early stopping as necessity, not convenience**: XGBoost stopped itself at 41 of 500 rounds; a guessed 200 rounds cost 0.024 AUC against a validated 63
+- Head-to-head across six models on one split: the 0.008s logistic regression posted the best AUC (0.842), with a total spread of about six passengers — ensembles are not automatically better on small, low-dimensional, mostly-linear problems
 
 ### Unsupervised Learning — KMeans Clustering & PCA
 - Three scripts covering clustering and dimensionality reduction, built around the idea that the standard recipes ("use the elbow method", "keep 95% of the variance", "always scale first") are heuristics with failure modes rather than rules
