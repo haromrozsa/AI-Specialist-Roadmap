@@ -45,6 +45,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
 | **Tree-Based Models** | Decision Trees, Gini vs. Entropy, Depth & Overfitting Curves, Cost-Complexity Pruning, Feature Importance |
 | **Ensemble Methods** | Bagging, Random Forests, Out-of-Bag Error, Tree Decorrelation, Gradient Boosting, XGBoost, Early Stopping |
+| **Model Explainability** | SHAP, Shapley Values, TreeSHAP, Global vs. Local Explanations, Force & Dependence Plots |
 | **Unsupervised Learning** | KMeans Clustering, Elbow Method, Silhouette Score, Adjusted Rand Index |
 | **Dimensionality Reduction** | PCA, Explained Variance, Scree Plots, Reconstruction from Components |
 | **NLP** | Hugging Face Transformers, Sentiment Analysis, Text Generation |
@@ -82,6 +83,17 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### SHAP Explainability — Explaining Individual Predictions
+- One class (`TitanicShapExplainer`) explaining a random forest on the **same Titanic split** as the trees demo, so the SHAP output can be read directly against the feature importances that directory already produced
+- **Why importance is not explanation**: gain importance has no sign, no unit, and no connection to any single prediction — it is a by-product of how the trees were grown rather than a decomposition of what the model did
+- **Additivity verified numerically, not asserted**: `base value + sum(SHAP)` reconstructs `predict_proba` to **1.78e-15** across all 179 test rows — floating-point noise, which is the property that makes SHAP trustworthy
+- **Values carry a unit**: `sex_male` at 0.1981 means it moves predicted survival probability by ~20 points on average; impurity importance produces a dimensionless number no two models can be compared on
+- **The sign a bar chart destroys**: `sex_male` averages −0.1541 for men and +0.2833 for women — one unsigned bar, two opposite effects, recovered by the beeswarm
+- **One passenger, decomposed**: test row 375 goes from the 0.3854 base value to a 0.9781 prediction via `sex_male` +0.2994, `fare` +0.1446, `pclass_3` +0.0991 — the question a regulator or a rejected applicant actually asks
+- **Importance hides shape**: `age` ranks 4th at 0.0318, but contributes +0.1659 for the under-10s and ≈ −0.015 across the 114 passengers aged 20–40 — near-useless for most, decisive for twelve children
+- **A one-hot artefact written up rather than hidden**: `pclass_3 = 0.0` is the third-largest *positive* contribution, because SHAP attributes to the encoded column — "not being in third class" helped
+- Preprocessing done by hand instead of in a `ColumnTransformer`, deliberately: TreeSHAP explains the columns the model was fitted on, so an unnamed array would label every plot `x0…x8`
 
 ### Decision Trees, Random Forests & Gradient Boosting
 - Three scripts covering the tree family end to end on the **same Titanic split the repository already models with logistic regression**, so every accuracy figure has a baseline to sit beside rather than floating on its own
@@ -289,6 +301,7 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 💡 Skills Demonstrated
 
+- **Model Explainability**: TreeSHAP on tree ensembles, Shapley value decomposition, local force plots vs. global summaries, dependence plots and interaction colouring
 - **Unsupervised Learning**: KMeans clustering, k selection via elbow and silhouette, cluster evaluation without labels
 - **Dimensionality Reduction**: PCA, explained-variance analysis, reconstruction quality vs. compression tradeoffs
 - **Model Development**: Building, training, and optimizing neural networks
