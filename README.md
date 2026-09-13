@@ -43,6 +43,7 @@ This repository serves as both a **learning project** and a **professional portf
 |----------|--------|
 | **AI Fundamentals** | Neural Networks, Deep Learning, Model Architecture |
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
+| **Support Vector Machines** | Linear vs. RBF Kernels, Maximum-Margin Classification, Support Vectors, Kernel Trick, C & Gamma Tuning, Feature Scaling |
 | **Tree-Based Models** | Decision Trees, Gini vs. Entropy, Depth & Overfitting Curves, Cost-Complexity Pruning, Feature Importance |
 | **Ensemble Methods** | Bagging, Random Forests, Out-of-Bag Error, Tree Decorrelation, Gradient Boosting, XGBoost, Early Stopping |
 | **Model Explainability** | SHAP, Shapley Values, TreeSHAP, Global vs. Local Explanations, Force & Dependence Plots |
@@ -83,6 +84,18 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Support Vector Machines & Kernels
+- One script and seven figures on **2-D synthetic data chosen so the decision boundary can be drawn** — a deliberate break from the Titanic split reused by the trees and SHAP demos, because an SVM's whole idea is geometry and a 7-feature boundary cannot be plotted
+- **The kernel trick made literal**: `make_circles` is lifted by hand into `phi(x) = (x1, x2, x1^2 + x2^2)` where a flat plane separates it, then an RBF SVC is shown finding the same circular boundary without ever building that third dimension — linear 0.6167 vs. RBF 1.0000 on a balanced 150/150 problem
+- **The margin drawn, not described**: contouring the raw `decision_function` at -1/0/+1 instead of only at the class flip, with the support vectors circled
+- **"The support vectors are the model" verified rather than asserted**: refitting on 69 of 210 training points reproduces **1.0000 of test predictions**, with a 9.94e-04 decision-function residual at solver-tolerance scale
+- **A default that is not a constant**: that same check first showed only 0.9556 agreement, because `gamma='scale'` is `1/(n_features * X.var())` and was silently recomputed from the smaller subset — the kernel changed, not the model
+- **C read through the support-vector count**: at C=0.01 *every one* of the 210 training points is a support vector; by C=1000 the model rests on 37
+- **A textbook claim that did not reproduce**: large C never overfit here — test accuracy rose monotonically 0.8556 → 0.9111 across six orders of magnitude and never turned down, because a wide `gamma='scale'` kernel cannot carve islands however hard C pushes. The gamma sweep produced the failure C never did: gamma=1000 gives **train 1.0000, test 0.6556**, visible as private islands around individual points
+- **Model selection kept honest**: 5-fold `GridSearchCV` on the training split alone chose C=1, gamma=1 → test 0.9000, *below* the gamma sweep's 0.9222 — a number picked by reading the test column. Both are kept in the write-up with the distinction stated
+- **Scaling as a correctness issue, contrasted with trees**: one feature multiplied by 1000 drops test accuracy 0.8667 → 0.7889 and flattens the boundary to a horizontal line, since the RBF kernel is a distance — the identical change leaves a decision tree bit-for-bit unchanged
+- `StandardScaler` applied inside a `Pipeline` throughout, so the scaler is fitted on training folds only and cross-validation stays honest
 
 ### SHAP Explainability — Explaining Individual Predictions
 - One class (`TitanicShapExplainer`) explaining a random forest on the **same Titanic split** as the trees demo, so the SHAP output can be read directly against the feature importances that directory already produced
@@ -301,6 +314,7 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 💡 Skills Demonstrated
 
+- **Support Vector Machines**: Maximum-margin classification, the kernel trick, RBF vs. linear kernels, joint C/gamma tuning via cross-validated grid search
 - **Model Explainability**: TreeSHAP on tree ensembles, Shapley value decomposition, local force plots vs. global summaries, dependence plots and interaction colouring
 - **Unsupervised Learning**: KMeans clustering, k selection via elbow and silhouette, cluster evaluation without labels
 - **Dimensionality Reduction**: PCA, explained-variance analysis, reconstruction quality vs. compression tradeoffs
