@@ -43,6 +43,8 @@ This repository serves as both a **learning project** and a **professional portf
 |----------|--------|
 | **AI Fundamentals** | Neural Networks, Deep Learning, Model Architecture |
 | **Machine Learning** | Supervised/Unsupervised Learning, Model Training & Evaluation |
+| **Instance-Based Learning** | k-Nearest Neighbours, Lazy vs. Eager Learners, Distance Metrics (Euclidean/Manhattan), Uniform vs. Distance Weighting, kd-Tree vs. Brute Force, Curse of Dimensionality |
+| **Probabilistic Classification** | Naive Bayes (Gaussian, Multinomial, Complement), Priors & Likelihoods, Conditional Independence, Reliability Diagrams, Brier Score, Log-Loss |
 | **Support Vector Machines** | Linear vs. RBF Kernels, Maximum-Margin Classification, Support Vectors, Kernel Trick, C & Gamma Tuning, Feature Scaling |
 | **Tree-Based Models** | Decision Trees, Gini vs. Entropy, Depth & Overfitting Curves, Cost-Complexity Pruning, Feature Importance |
 | **Ensemble Methods** | Bagging, Random Forests, Out-of-Bag Error, Tree Decorrelation, Gradient Boosting, XGBoost, Early Stopping |
@@ -84,6 +86,19 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### k-Nearest Neighbours & Naive Bayes — The Two Baselines
+- Two scripts and twelve figures closing the classical-ML foundation: k-NN geometry on 2-D `make_moons` where the boundary can be drawn, **both** models on the **same Titanic split** the rest of the repository uses, and Naive Bayes additionally on 20 newsgroups — because a tabular-only result would have libelled it
+- **"k-NN does no work at training time" is false for scikit-learn's default**: `algorithm="auto"` picks a kd_tree whose `fit()` grew **554×** (1.42 ms → 788 ms) across a 256× increase in data, while its `predict()` grew only 2.59×. Only `algorithm="brute"` behaves like the textbook lazy learner — its predict grew 39.1× (316 ms → 12,360 ms). Both rows are correct; only one runs when you type `KNeighborsClassifier()`
+- **k is a complexity knob that runs backwards**, and its training score is worthless by construction: a training point is its own nearest neighbour at distance 0, so k=1 scores 1.0000 on train for free. With `weights="distance"` that pinning holds for **every** k, not just k=1 — a second, independent reason not to select k on training accuracy
+- **Scaling as a correctness issue, measured on real data**: the scaler is worth **+0.0950** test accuracy on Titanic (0.7821 vs. 0.6872 — 17 of 179 passengers), because `fare` runs 0–512 while `sibsp` runs 0–8 and the neighbour set is otherwise chosen almost entirely by ticket price
+- **The curse of dimensionality measured as its mechanism, not just its symptom**: adding pure noise columns to two unchanged informative features drives the mean nearest/farthest distance ratio from 0.036 to 0.790 — in 2 dimensions the nearest training point is 28× closer than the farthest, in 202 it is 1.27× closer, and "nearest" stops carrying information
+- **What "naive" actually costs, separated into three different rates**: copying one feature 16 times leaves ROC-AUC nearly intact (0.8065 → 0.7817) but drops accuracy 14 points (0.7877 → 0.6480) and explodes log-loss 0.70 → 4.72, with **174 of 179 predictions more confident than 99%**. Logistic regression, handed the identical duplicated columns, does not move at all — it splits the coefficient where Naive Bayes multiplies the evidence
+- **A correction made against my own write-up rather than quietly dropped**: I had written that accuracy survives the duplication, as the folklore says. It does not — only the *ranking* does, because accuracy reads that ranking through a fixed 0.5 threshold that the saturating probabilities drag rows across
+- **Probabilities that should not be read as probabilities**: GaussianNB puts **42.5%** of Titanic predictions outside [0.05, 0.95] against logistic regression's 4.5%, at a worse Brier score (0.1749 vs. 0.1448) — a decent classifier and an untrustworthy likelihood, which is exactly why the ROC curve cannot diagnose it and the reliability diagram can
+- **Where the "baseline" wins outright**: on 4-way newsgroup classification MultinomialNB beats logistic regression **0.8924 vs. 0.8691** while fitting **105× faster** (45.6 ms vs. 4,804 ms) — on wide sparse text it is not a floor to beat, it is the better model
+- **A second textbook claim that did not reproduce**: the Ng & Jordan small-data crossing never happened — MultinomialNB led at *every* training size from 20 to 2,317 documents (`LR ahead at: []`). The gap does shrink from +0.089 to +0.019 exactly as the mechanism predicts; it simply never crosses in a corpus this size, which is a statement about the corpus rather than a refutation
+- **Both models land at the bottom of the repository's shared Titanic table** (GaussianNB 0.788, k-NN 0.782, against the random forest's 0.821) — which is what a baseline is *for*: the ensemble's extra complexity is buying about four points, and now that is a measured claim rather than an assumption
 
 ### Support Vector Machines & Kernels
 - One script and seven figures on **2-D synthetic data chosen so the decision boundary can be drawn** — a deliberate break from the Titanic split reused by the trees and SHAP demos, because an SVM's whole idea is geometry and a 7-feature boundary cannot be plotted
