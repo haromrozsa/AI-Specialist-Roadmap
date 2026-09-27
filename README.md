@@ -77,6 +77,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Serverless** | AWS Lambda, S3 Event Triggers, Lambda Layers, Cold Start Optimization |
 | **Infrastructure as Code** | AWS CDK, CloudFormation, IAM Policies, Resource Management |
 | **Experiment Tracking** | MLflow, Parameter Logging, Metric Tracking, Dataset Versioning |
+| **Hyperparameter Optimization** | GridSearchCV, RandomizedSearchCV, Optuna (TPE Sampler), Equal-Budget Search Comparison, Convergence Analysis |
 | **Workflow Orchestration** | Apache Airflow, DAG Design, Task Dependencies, XCom Data Passing |
 
 ## Technologies Used
@@ -147,6 +148,12 @@ This repository serves as both a **learning project** and a **professional portf
 - **Reconstruction via `inverse_transform`** at 1/2/5/10/20/40/64 components with per-pixel MSE — digits are readable at 10 components (74% variance), well below the conventional 95% threshold
 - **Combined `scale → PCA → cluster` pipeline** with the ordering justified (scaling after PCA would re-inflate the components PCA just demoted) and the scaling decision measured rather than assumed — standardizing hurts here because all 64 features share one unit and 3 pixels are constant
 - Contingency table of true digit vs. cluster ID showing where clustering and classification genuinely diverge: KMeans finds compact regions in pixel space, which is not the semantic partition
+
+### Hyperparameter Search — Grid vs Random vs Optuna
+- One script and two figures asking the follow-up the repository's single `GridSearchCV` call never got: for the **same search budget**, does the strategy matter? A RandomForestClassifier on the same Titanic split used across the classical-ML demos, tuned three ways under an identical 18-trial × 5-fold-CV budget (90 model fits each, 270 total)
+- **GridSearchCV** exhaustively enumerates a fixed 3×3×2 lattice; **RandomizedSearchCV** draws 18 uniform samples from wider, partly continuous ranges; **Optuna** draws 18 TPE-guided samples from the same ranges, each informed by the trials before it
+- **Result written up as it came out**: all three landed within 0.003 CV accuracy of each other (Grid 0.8328, Random 0.8314, Optuna 0.8301) and identically at 0.7933 on the untouched test set — at this budget and space size, search strategy shows up in *convergence speed and wall time*, not the final answer
+- Every one of the 54 evaluated combinations logged to MLflow as its own run (params, mean/std CV accuracy, fit time), tagged by method, plus one summary run per method with the winning pipeline logged as an MLflow model — `mlflow ui` shows all three searches side by side
 
 ### LangChain with Hugging Face
 - Text generation chain implementing prompt → LLM → output pattern
