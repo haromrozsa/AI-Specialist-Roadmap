@@ -78,6 +78,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Infrastructure as Code** | AWS CDK, CloudFormation, IAM Policies, Resource Management |
 | **Experiment Tracking** | MLflow, Parameter Logging, Metric Tracking, Dataset Versioning |
 | **Hyperparameter Optimization** | GridSearchCV, RandomizedSearchCV, Optuna (TPE Sampler), Equal-Budget Search Comparison, Convergence Analysis |
+| **Data Leakage & Preprocessing** | `Pipeline`, `ColumnTransformer`, Train/Test Split Discipline, Preprocessing vs. Target Leakage, Fold-Level Leakage in Cross-Validation, Unseen-Category Handling |
 | **Workflow Orchestration** | Apache Airflow, DAG Design, Task Dependencies, XCom Data Passing |
 
 ## Technologies Used
@@ -87,6 +88,15 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Pipelines & Data Leakage — Measuring What the Wrapper Prevents
+- One script and one figure on the question the repository had assumed rather than tested: `Pipeline` and `ColumnTransformer` were already used correctly in **eight files**, so instead of demonstrating them again this measures **what they cost you to skip**, on the same Titanic split the rest of the classical-ML demos use
+- **The headline result is a non-result, and it is kept as one**: fitting the whole preprocessor on all 891 rows *before* the train/test split gave byte-identical test accuracy to doing it correctly — **0.7989 either way, a gap of +0.0000**. Leaking across cross-validation folds was *worse* by 0.0014 (0.8020 → 0.8006), with four of five folds bit-identical
+- **Why, as a mechanism rather than an excuse**: preprocessing leakage is dilution-limited. A leaked *statistic* is an aggregate over train and test together, so 179 test rows barely move a median computed from 891. **Target** leakage has no such dilution — one column carries each row's answer individually, which is why `trees_and_boosting/` hit **1.0000** with the `alive` column and this hit **+0.0000** with a scaler. Same word, two unrelated magnitudes
+- **The finding that actually matters came from a crash, not a plan**: with a 30-row training sample that never saw `embarked='Q'`, the correctly-fitted encoder **raises `ValueError: Found unknown categories ['Q']`** while the leaked encoder transforms the test set happily and reports 0.7430. The leak did not inflate the score — it **deleted the evidence that the training sample was unrepresentative**
+- **Swept across training-set size**, 40 random splits each, because at n=30 a single split swings by more than the effect being measured: the mean gap peaks at **+0.0029** (n=30) and decays to −0.0001 at the full 712 rows. The column that moves is not accuracy — at n=30, **6 of 40 splits** had a test category the training set never saw, six chances for the leak to hide a broken sample that every accuracy column is blind to
+- **What this changes about reviewing this repository**: `CLAUDE.md` is right to put leakage first, but not for the reason usually given. The defensible argument is not effect size — it is that the bug is *silent*, that **no pytest suite or CI covers these directories**, that the printed number *is* the deliverable that gets written into READMEs as a portfolio claim, that leaky code reads *tidier* than correct code, and that it conceals other failures
+- An sklearn detail worth recording: `OneHotEncoder` refuses `drop="first"` together with `handle_unknown="ignore"`, since a dropped reference level and an unknown category both encode as all-zeros and would be indistinguishable
 
 ### k-Nearest Neighbours & Naive Bayes — The Two Baselines
 - Two scripts and twelve figures closing the classical-ML foundation: k-NN geometry on 2-D `make_moons` where the boundary can be drawn, **both** models on the **same Titanic split** the rest of the repository uses, and Naive Bayes additionally on 20 newsgroups — because a tabular-only result would have libelled it
