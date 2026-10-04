@@ -40,9 +40,16 @@ plt.show()
 X.hist(bins=100, figsize=(25, 20))
 plt.show()
 
+# Split first, then scale. Fitting the scaler on all 20,640 rows before the
+# split would compute its mean and standard deviation partly from the test rows
+# the model is about to be scored on -- the preprocessing leak that
+# feature_pipelines/ measures. Here it is fit on the training rows only and
+# merely applied to the test rows, so the test set stays genuinely unseen.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
 scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 model = LinearRegression()
 model.fit(X_train, y_train)

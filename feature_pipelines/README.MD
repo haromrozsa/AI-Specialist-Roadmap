@@ -28,14 +28,20 @@ another demo *using* them would have taught nothing new. `trees_and_boosting/`
 already demonstrates **target** leakage via the `alive` column. What no file
 here did was measure the **preprocessing** leak that `CLAUDE.md` actually names.
 
-It is not hypothetical in this repository:
+It was not hypothetical in this repository. `linear_regression/CaliforniaHousingLinearRegression.py`
+carried exactly this shape until the follow-up commit that fixed it:
 
-`linear_regression/CaliforniaHousingLinearRegression.py:43-45`
 ```python
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)                    # fitted on all 20,640 rows
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, ...)
 ```
+
+It now splits first and fits the scaler on the training rows only. **The metrics
+did not move** — MSE 0.5559, RMSE 0.7456, R² 0.5758 before and after, identical
+to four decimals. That is this session's finding applied to the repository's own
+code: 20,640 rows dilute the leak to nothing, so the fix is about correctness and
+about not teaching the wrong order, not about a number that was wrong.
 
 ## Running
 
