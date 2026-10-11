@@ -79,6 +79,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Experiment Tracking** | MLflow, Parameter Logging, Metric Tracking, Dataset Versioning |
 | **Hyperparameter Optimization** | GridSearchCV, RandomizedSearchCV, Optuna (TPE Sampler), Equal-Budget Search Comparison, Convergence Analysis |
 | **Data Leakage & Preprocessing** | `Pipeline`, `ColumnTransformer`, Train/Test Split Discipline, Preprocessing vs. Target Leakage, Fold-Level Leakage in Cross-Validation, Unseen-Category Handling |
+| **Imbalanced Data** | `class_weight`, SMOTE (hand-written), Precision-Recall Curves, PR-AUC vs. ROC-AUC, Accuracy Paradox, Train-Only Resampling |
 | **Workflow Orchestration** | Apache Airflow, DAG Design, Task Dependencies, XCom Data Passing |
 
 ## Technologies Used
@@ -88,6 +89,14 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Imbalanced Data — class_weight, SMOTE & PR Curves
+- One script and one figure on a synthetic **1% positive class** (20,000 rows, 60 positives in the test set). SMOTE is written by hand in ~10 lines, so no `imbalanced-learn` dependency
+- **The accuracy paradox measured**: a model that always predicts "negative" scores **0.9900** accuracy; plain logistic regression scores 0.9927 while missing 65% of the positives
+- **ROC flatters, PR doesn't**: all three real models show ROC-AUC 0.92–0.94, while PR-AUC sits at 0.28–0.56 against a random baseline of 0.01, because thousands of negatives cushion the false positive rate and nothing cushions precision
+- **`class_weight="balanced"` and SMOTE mostly move the threshold**: recall 0.35 → ~0.85, precision 0.81 → ~0.08, which is a different point on the same trade-off
+- **Result written up as it came out**: rebalancing *raised* ROC-AUC (0.922 → 0.945) but *halved* PR-AUC (0.558 → 0.281), so the two threshold-free metrics pick different winners
+- Resampling applied to the training split only, so the test set keeps its real prevalence
 
 ### Pipelines & Data Leakage — Measuring What the Wrapper Prevents
 - One script and one figure on the question the repository had assumed rather than tested: `Pipeline` and `ColumnTransformer` were already used correctly in **eight files**, so instead of demonstrating them again this measures **what they cost you to skip**, on the same Titanic split the rest of the classical-ML demos use
@@ -346,6 +355,7 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 💡 Skills Demonstrated
 
+- **Imbalanced Classification**: Choosing PR-AUC over accuracy and ROC-AUC, class weighting, SMOTE oversampling on the training split only
 - **Support Vector Machines**: Maximum-margin classification, the kernel trick, RBF vs. linear kernels, joint C/gamma tuning via cross-validated grid search
 - **Model Explainability**: TreeSHAP on tree ensembles, Shapley value decomposition, local force plots vs. global summaries, dependence plots and interaction colouring
 - **Unsupervised Learning**: KMeans clustering, k selection via elbow and silhouette, cluster evaluation without labels
