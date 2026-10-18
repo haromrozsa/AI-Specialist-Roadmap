@@ -80,6 +80,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Hyperparameter Optimization** | GridSearchCV, RandomizedSearchCV, Optuna (TPE Sampler), Equal-Budget Search Comparison, Convergence Analysis |
 | **Data Leakage & Preprocessing** | `Pipeline`, `ColumnTransformer`, Train/Test Split Discipline, Preprocessing vs. Target Leakage, Fold-Level Leakage in Cross-Validation, Unseen-Category Handling |
 | **Imbalanced Data** | `class_weight`, SMOTE (hand-written), Precision-Recall Curves, PR-AUC vs. ROC-AUC, Accuracy Paradox, Train-Only Resampling |
+| **Model Evaluation** | ROC-AUC, Calibration Curves, Brier Score, Log Loss, Isotonic Recalibration (`CalibratedClassifierCV`), Threshold Selection (Max F1, Youden's J, Cost-Based), Train/Validation/Test Split |
 | **Workflow Orchestration** | Apache Airflow, DAG Design, Task Dependencies, XCom Data Passing |
 
 ## Technologies Used
@@ -89,6 +90,13 @@ This repository serves as both a **learning project** and a **professional portf
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
+
+### Model Evaluation — ROC/AUC, Calibration & Threshold Selection
+- One script and one figure separating the three questions to ask of any classifier: **ranking** (ROC-AUC), **calibration** (is 0.8 really 80%? — calibration curve, Brier, log loss) and **decision** (which threshold). Synthetic 20%-positive data, 60/20/20 train/validation/test split
+- **Ranking ≠ calibration**: Naive Bayes out-ranks logistic regression (AUC 0.853 vs 0.838) but has worse probabilities (Brier 0.140 vs 0.116). It is overconfident: at ~0.99 predicted, only ~72% are positive
+- **Isotonic recalibration fixes probabilities and leaves the ranking alone**: AUC unchanged at 0.8528, Brier 0.140 → 0.112, log loss 0.517 → 0.362. Random forest shows the opposite problem (underconfident S-curve) while still winning every metric
+- **0.5 is rarely the right threshold**: chosen on validation and scored on test, max-F1 (0.30) lifts F1 from 0.500 to 0.591; a cost-based rule (missed positive = 5× false alarm, threshold 0.21) cuts total cost from 1306 to 856
+- Each threshold rule wins on its own metric, so the rule has to come from what errors actually cost
 
 ### Imbalanced Data — class_weight, SMOTE & PR Curves
 - One script and one figure on a synthetic **1% positive class** (20,000 rows, 60 positives in the test set). SMOTE is written by hand in ~10 lines, so no `imbalanced-learn` dependency
@@ -355,6 +363,7 @@ This repository serves as both a **learning project** and a **professional portf
 
 ## 💡 Skills Demonstrated
 
+- **Model Evaluation**: Separating ranking from calibration, reliability diagrams, isotonic recalibration, choosing decision thresholds on a validation set by F1, Youden's J, or misclassification cost
 - **Imbalanced Classification**: Choosing PR-AUC over accuracy and ROC-AUC, class weighting, SMOTE oversampling on the training split only
 - **Support Vector Machines**: Maximum-margin classification, the kernel trick, RBF vs. linear kernels, joint C/gamma tuning via cross-validated grid search
 - **Model Explainability**: TreeSHAP on tree ensembles, Shapley value decomposition, local force plots vs. global summaries, dependence plots and interaction colouring
