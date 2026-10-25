@@ -62,7 +62,7 @@ This repository serves as both a **learning project** and a **professional portf
 | **Model Usage** | Pre-trained Models, Fine-tuning, Inference Optimization |
 | **Model Optimization** | Post-Training Quantization, INT8, Dynamic vs. Static Quantization, Calibration |
 | **Model Serving** | FastAPI, Spring Boot, ONNX Runtime, REST API Inference |
-| **AI in Java** | ONNX Runtime for Java, Spring Boot, JVM-based Inference, Lombok, SLF4J Logging |
+| **AI in Java** | ONNX Runtime for Java, Spring Boot, JVM-based Inference, Lombok, SLF4J Logging, Calling an LLM from Spring Boot (Anthropic Java SDK) |
 | **Enterprise Java** | Spring Boot, Dependency Injection, Bean Validation, Actuator, Swagger/OpenAPI |
 | **Model Evaluation** | Precision, Recall, F1-Score, IoU, Ground Truth Annotations |
 | **Production APIs** | Pydantic Validation, Logging, Error Handling, Latency Measurement |
@@ -86,7 +86,7 @@ This repository serves as both a **learning project** and a **professional portf
 ## Technologies Used
 
 - **Python** - Primary language
-- **Java** - ONNX Runtime inference demo application
+- **Java** - ONNX Runtime inference demo application, Spring Boot LLM endpoint
 - **Docker** - Containerization and multi-service orchestration
 
 ## 🛠️ Projects & Implementations
@@ -298,6 +298,12 @@ This repository serves as both a **learning project** and a **professional portf
 - **Latency measured honestly**: dynamic came out 3.3x *slower* and static roughly at parity, because this CNN runs in ~0.1 ms — QDQ node overhead dominates at that scale, and the CPU lacks VNNI integer acceleration
 - Demonstrates why weights need no calibration but activations do: `y = W @ x` needs both operands as integers, and `x` is unknown until inference
 
+### Spring Boot LLM Endpoint (Claude)
+- Minimal Spring Boot `POST /api/chat` endpoint that sends a prompt to Claude through the **official Anthropic Java SDK** and returns the answer plus token usage as JSON. Two Java classes
+- One `AnthropicClient` bean shared by the app. The API key comes from the environment, never from config files. The model id is a property
+- Checks `stop_reason` before reading content: a refusal comes back as HTTP 200 with no text, so the endpoint turns it into `422` instead of an empty answer. Server-side `fallbacks` is turned on as well
+- Verified against a local stub of the Messages API (request shape, response parsing, `400`/`422` paths). A real API call is still pending
+
 ### Spring Boot ML API (MNIST)
 - Production-ready Spring Boot REST API for MNIST digit classification using ONNX Runtime
 - Layered architecture with Controller → Service → Utility separation and Spring dependency injection
@@ -375,7 +381,7 @@ This repository serves as both a **learning project** and a **professional portf
 - **Model Export**: ONNX conversion for portable, framework-agnostic deployment
 - **Inference Optimization**: Post-training INT8 quantization, calibration data readers, size/latency/accuracy tradeoff measurement
 - **API Development**: FastAPI and Spring Boot endpoints for ML model serving with proper validation
-- **AI in Java**: ONNX Runtime for Java, JVM-based inference, pure-Java image preprocessing
+- **AI in Java**: ONNX Runtime for Java, JVM-based inference, pure-Java image preprocessing, LLM calls from Spring Boot via the Anthropic Java SDK
 - **Spring Boot Expertise**: Dependency injection, lifecycle management, REST controllers, Bean Validation
 - **Production APIs**: Pydantic validation (Python), Jakarta validation (Java), structured logging, error handling, latency monitoring
 - **Framework Proficiency**: Hands-on experience with PyTorch, TensorFlow, and Hugging Face
